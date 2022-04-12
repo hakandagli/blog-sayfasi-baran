@@ -3,6 +3,7 @@ import { BlogService } from './../../services/blog.service';
 import { Component, OnInit } from '@angular/core';
 import { BlogDetailModel } from 'src/app/models/blogDetailModel';
 import { Router } from '@angular/router';
+import { DetailService } from 'src/app/services/detail.service';
 
 @Component({
   selector: 'app-blog',
@@ -12,11 +13,21 @@ import { Router } from '@angular/router';
 export class BlogComponent implements OnInit {
   blogs: BlogModel[] = [];
   blogCount: number = 6;
+  blogContent?:string;
 
-  constructor(private blogService: BlogService, private router: Router) {}
+  constructor(private blogService: BlogService, private router: Router, private detailService:DetailService) {
+  }
 
   ngOnInit(): void {
     this.getAllBlogs();
+
+    this.detailService.blogDetail.subscribe(detail=>{
+      if(detail)
+        this.blogContent = detail.blogContent;
+    });
+
+    //constructor'da yapmıştık burayı ngOnInit'e taşıdım
+    
   }
 
   //get all blogs
